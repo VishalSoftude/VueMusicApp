@@ -105,6 +105,8 @@
 
 <script>
 import firebase from '../includes/firebase'
+import { mapActions } from 'pinia'
+import useUserStore from '../stores/user'
 
 export default {
   name: 'RegisterForm',
@@ -132,6 +134,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions(useUserStore, {
+      createUser: 'register'
+    }),
     async registered(formValues) {
       this.reg_show_alert = true
       this.reg_in_submission = true
@@ -150,9 +155,24 @@ export default {
         return
       }
 
+      try {
+        await this.createUser(formValues)
+      } catch (error) {
+        this.reg_in_submission = false
+        this.reg_alert_msg = `${error.message}`
+        this.reg_alert_variant = 'bg-red-500'
+        return
+      }
+      // Adding data into firebase Appstore with the help of collection
+
+      //
+
       this.reg_alert_variant = 'bg-green-500'
       this.reg_alert_msg = 'Success! your account has been created.'
       console.log(userCredentials)
+
+      window.location.reload()
+      console.log(formValues)
     }
   }
 }
