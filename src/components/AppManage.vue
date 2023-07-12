@@ -100,9 +100,13 @@
 </template>
 <script>
 import AppUpload from '../components/Upload.vue'
-
+import { songsCollection, auth } from '../includes/firebase'
 export default {
   name: 'AppManage',
-  components: { AppUpload }
+  components: { AppUpload },
+  async created() {
+    const snapshot = await songsCollection.where('uid', '==', auth.currentUser.uid).get()
+    console.log('snapshot', snapshot)
+  }
 }
 </script>
