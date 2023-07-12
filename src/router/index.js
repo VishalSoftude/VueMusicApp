@@ -5,6 +5,8 @@ import Manage from '../components/AppManage.vue'
 import Creative from '../components/CreativeThings.vue'
 import TestingComponent from '../components/Testing.vue'
 import ApiIntegration from '../components/ApiIntegration.vue'
+import UseUserStore from '../stores/user'
+
 const routes = [
   {
     name: 'home',
@@ -23,6 +25,9 @@ const routes = [
     beforeEnter: (to, from, next) => {
       console.log('Manage Route Guard')
       next()
+    },
+    meta: {
+      reqiresAuth: true
     }
   },
   {
@@ -68,8 +73,18 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  console.log('Global Guard')
-  console.log(to, from)
-  next()
+  if (!to.meta.reqiresAuth) {
+    next()
+    return
+  }
+  const userStore = UseUserStore()
+  if (userStore.userLoggedIn) {
+    next()
+  } else {
+    next({ name: 'home' })
+  }
+  // console.log('Global Guard')
+  // console.log(to, from)
+  // next()
 })
 export default router
