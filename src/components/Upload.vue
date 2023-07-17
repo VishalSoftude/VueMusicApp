@@ -108,6 +108,12 @@ export default {
       upload.task.cancel()
     })
   }
+  // mounted() {
+  //   console.log('songs from manage component', this.songs)
+  //   this.songs.forEach((song) => {
+  //     console.log('data.target', song)
+  //   })
+  // }
 }
 </script>
 
