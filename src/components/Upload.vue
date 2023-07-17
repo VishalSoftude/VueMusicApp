@@ -44,7 +44,6 @@
 import { storage, auth, songsCollection } from '../includes/firebase'
 export default {
   name: 'AppUpload',
-  props: ['songs'],
   data() {
     return {
       is_dragover: false,
@@ -108,13 +107,13 @@ export default {
     this.uploads.forEach((upload) => {
       upload.task.cancel()
     })
-  },
-  mounted() {
-    console.log('songs from manage component', this.songs)
-    this.songs.forEach((song) => {
-      console.log('data.target', song)
-    })
   }
+  // mounted() {
+  //   console.log('songs from manage component', this.songs)
+  //   this.songs.forEach((song) => {
+  //     console.log('data.target', song)
+  //   })
+  // }
 }
 </script>
 
