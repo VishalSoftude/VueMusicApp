@@ -54,6 +54,7 @@
 <script>
 import { mapActions } from 'pinia'
 import modalStore from '../stores/modal'
+import { songsCollection, storage } from '../includes/firebase'
 export default {
   name: 'CompositionItem',
   props: {
@@ -64,6 +65,10 @@ export default {
     },
     index: {
       type: Number,
+      required: true
+    },
+    removeSong: {
+      type: Function,
       required: true
     }
   },
@@ -88,11 +93,13 @@ export default {
       this.updateSongsList(this.index, formValues)
     },
     async deleteAsync() {
-      try {
-        this.deleteSong(this.song.uid)
-      } catch (error) {
-        console.log(error)
-      }
+      const storageRef = storage.ref()
+      const songRef = storageRef.child(`songs/${this.song.original_name}`)
+      await songRef.delete()
+
+      await songsCollection.doc(this.song.docID).delete()
+
+      this.removeSong(this.index)
     }
   }
 }

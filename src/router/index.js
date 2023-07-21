@@ -5,6 +5,7 @@ import Manage from '../components/AppManage.vue'
 import Creative from '../components/CreativeThings.vue'
 import TestingComponent from '../components/Testing.vue'
 import ApiIntegration from '../components/ApiIntegration.vue'
+import SongView from '../views/SongView.vue'
 import UseUserStore from '../stores/user'
 
 const routes = [
@@ -38,6 +39,12 @@ const routes = [
       console.log('Manage Creative Route Guard')
       next()
     }
+  },
+  {
+    name: 'song',
+    path: '/song/:id',
+    //redirect: { name: 'song' },
+    component: SongView
   },
   {
     name: 'testing',
