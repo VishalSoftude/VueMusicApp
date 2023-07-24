@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div>
     <ul>
       <li v-for="item in responseData" :key="item.id">
@@ -6,11 +6,14 @@
       </li>
     </ul>
   </div>
+  <SwaggerUI :spec-url="swaggerSpecUrl" />
 </template>
 
 <script>
 import axios from 'axios'
 import useUserStore from '../stores/user'
+import SwaggerUI from 'swagger-ui-dist/swagger-ui-es-bundle' // Import the Swagger UI ES bundle
+import 'swagger-ui-dist/swagger-ui.css'
 export default {
   name: 'ApiIntegration',
   beforeRouteEnter(to, from, next) {
@@ -23,16 +26,19 @@ export default {
   },
   data() {
     return {
-      responseData: null
+      responseData: null,
+      swaggerSpecUrl: 'https://localhost:7021/swagger/v1/swagger.json'
     }
   },
-
+  components: {
+    SwaggerUI
+  },
   methods: {
     fetchData() {
+      var userStore = useUserStore()
+      console.log('userStore.userLoggedIn', userStore.authToken)
       axios
-        .get(
-          'https://orsoapi.com/?command=products&sort=created_at&posted=Y&created_at=2022-07-07&token=B64A6D78FD67F55D147C81DEAA7C3F3AF8AC9A75'
-        )
+        .get('https://localhost:7021/api/cms/product/list/1')
         .then((response) => {
           this.responseData = response
           console.log(response)
@@ -48,4 +54,35 @@ export default {
 }
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped></style> -->
+<!-- <template>
+  <div>
+    <h1>API Documentation</h1>
+    <SwaggerUI :spec-url="swaggerSpecUrl" />
+  </div>
+</template>
+
+<script>
+import SwaggerUI from 'swagger-ui-vue'
+import 'swagger-ui-vue/dist/swagger-ui.css'
+
+export default {
+  components: {
+    SwaggerUI
+  },
+  data() {
+    return {
+      swaggerSpecUrl: 'https://localhost:7021/swagger/v1/swagger.json' // Update with your Swagger specification URL
+    }
+  }
+}
+</script> -->
+<template>
+  <div></div>
+</template>
+
+<script>
+export default {}
+</script>
+
+<style lang="scss" scoped></style>

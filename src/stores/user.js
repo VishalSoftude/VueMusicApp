@@ -2,7 +2,8 @@ import { defineStore } from 'pinia'
 import { auth, usersCollection } from '../includes/firebase'
 export default defineStore('user', {
   state: () => ({
-    userLoggedIn: false
+    userLoggedIn: false,
+    authToken: ''
   }),
   actions: {
     async register(formValues) {
@@ -29,6 +30,9 @@ export default defineStore('user', {
     async signOut() {
       await auth.signOut()
       this.userLoggedIn = false
+    },
+    setAuthToken(token) {
+      this.authToken = token
     }
   }
 })

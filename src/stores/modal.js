@@ -24,6 +24,10 @@ export default defineStore('modal', {
           console.log('song deleted')
         })
       console.log(result)
+    },
+    async addComment(docId, formValues) {
+      const result = await songsCollection.doc(docId).update(formValues)
+      console.log(result)
     }
   }
 })
