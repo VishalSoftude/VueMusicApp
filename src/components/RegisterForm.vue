@@ -104,8 +104,8 @@
 </template>
 
 <script>
-import { mapActions } from 'pinia'
-import useUserStore from '../stores/user'
+import { mapActions } from 'pinia';
+import useUserStore from '../stores/user';
 
 export default {
   name: 'RegisterForm',
@@ -130,35 +130,35 @@ export default {
       reg_show_alert: false,
       reg_alert_variant: 'bg-blue-500',
       reg_alert_msg: 'Please wait! your account is being created.'
-    }
+    };
   },
   methods: {
     ...mapActions(useUserStore, {
       createUser: 'register'
     }),
     async registered(formValues) {
-      this.reg_show_alert = true
-      this.reg_in_submission = true
-      this.reg_alert_variant = 'bg-blue-500'
-      this.reg_alert_msg = 'Please wait! your account is being created.'
+      this.reg_show_alert = true;
+      this.reg_in_submission = true;
+      this.reg_alert_variant = 'bg-blue-500';
+      this.reg_alert_msg = 'Please wait! your account is being created.';
 
       try {
-        await this.createUser(formValues)
+        await this.createUser(formValues);
       } catch (error) {
-        this.reg_in_submission = false
-        this.reg_alert_msg = `${error.message}`
-        this.reg_alert_variant = 'bg-red-500'
-        return
+        this.reg_in_submission = false;
+        this.reg_alert_msg = `${error.message}`;
+        this.reg_alert_variant = 'bg-red-500';
+        return;
       }
       // Adding data into firebase Appstore with the help of collection
 
       //
 
-      this.reg_alert_variant = 'bg-green-500'
-      this.reg_alert_msg = 'Success! your account has been created.'
-      window.location.reload()
-      console.log(formValues)
+      this.reg_alert_variant = 'bg-green-500';
+      this.reg_alert_msg = 'Success! your account has been created.';
+      window.location.reload();
+      console.log(formValues);
     }
   }
-}
+};
 </script>

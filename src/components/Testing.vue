@@ -37,15 +37,15 @@
 </template>
 
 <script>
-import useUserStore from '../stores/user'
+import useUserStore from '../stores/user';
 export default {
   name: 'TestingComponent',
   beforeRouteEnter(to, from, next) {
-    var userStore = useUserStore()
+    var userStore = useUserStore();
     if (userStore.userLoggedIn) {
-      next()
+      next();
     } else {
-      next({ name: 'home' })
+      next({ name: 'home' });
     }
   },
   data() {
@@ -53,20 +53,20 @@ export default {
       isAnimating: false,
       show: false,
       items: []
-    }
+    };
   },
   methods: {
     toggleAnimation() {
-      this.isAnimating = !this.isAnimating
+      this.isAnimating = !this.isAnimating;
     },
     toggle() {
-      this.show = !this.show
+      this.show = !this.show;
     },
     addItem() {
-      this.items.push('Item ' + (this.items.length + 1))
+      this.items.push('Item ' + (this.items.length + 1));
     }
   }
-}
+};
 </script>
 
 <style scoped>

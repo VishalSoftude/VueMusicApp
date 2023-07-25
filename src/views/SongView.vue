@@ -84,9 +84,9 @@
 </template>
 
 <script>
-import { songsCollection, commentsCollection, auth } from '../includes/firebase'
-import { mapState } from 'pinia'
-import userStore from '../stores/user'
+import { songsCollection, commentsCollection, auth } from '../includes/firebase';
+import { mapState } from 'pinia';
+import userStore from '../stores/user';
 export default {
   name: 'SongView',
   data() {
@@ -101,40 +101,40 @@ export default {
       comment_alert_message: 'Please wait! Your comment is submitted',
       comments: [],
       sort: '1'
-    }
+    };
   },
   computed: {
     ...mapState(userStore, ['userLoggedIn']),
     sortedComments() {
       return this.comments.slice().sort((a, b) => {
         if (this.sort === '1') {
-          return new Date(b.datePosted) - new Date(a.datePosted)
+          return new Date(b.datePosted) - new Date(a.datePosted);
         }
-        return new Date(a.datePosted) - new Date(b.datePosted)
-      })
+        return new Date(a.datePosted) - new Date(b.datePosted);
+      });
     }
   },
   mounted() {
-    console.log(this.$route.params.id)
+    console.log(this.$route.params.id);
   },
   async created() {
-    const docSnapshot = await songsCollection.doc(this.$route.params.id).get()
+    const docSnapshot = await songsCollection.doc(this.$route.params.id).get();
     if (!docSnapshot.exists) {
-      this.$router.push({ name: 'home' })
-      return
+      this.$router.push({ name: 'home' });
+      return;
     }
-    const { sort } = this.$route.query
-    this.sort = sort === '1' || sort === '2' ? sort : '1'
-    this.song = docSnapshot.data()
-    this.getComments()
+    const { sort } = this.$route.query;
+    this.sort = sort === '1' || sort === '2' ? sort : '1';
+    this.song = docSnapshot.data();
+    this.getComments();
     //this.sortedComments()
   },
   methods: {
     async SaveComment(formValues, { resetForm }) {
-      ;(this.comment_in_submission = true),
+      (this.comment_in_submission = true),
         (this.comment_show_alert = true),
         (this.comment_alert_varient = 'bg-blue-500'),
-        (this.comment_alert_message = 'Please wait! Your comment is submitted')
+        (this.comment_alert_message = 'Please wait! Your comment is submitted');
 
       const comment = {
         content: formValues.comment,
@@ -142,47 +142,47 @@ export default {
         sid: this.$route.params.id,
         userName: auth.currentUser.displayName,
         userId: auth.currentUser.uid
-      }
+      };
       try {
-        await commentsCollection.add(comment)
-        ;(this.comment_in_submission = false),
+        await commentsCollection.add(comment);
+        (this.comment_in_submission = false),
           (this.comment_show_alert = true),
           (this.comment_alert_varient = 'bg-green-500'),
-          (this.comment_alert_message = 'Success... Your comment is saved')
-        this.getComments()
+          (this.comment_alert_message = 'Success... Your comment is saved');
+        this.getComments();
       } catch (error) {
-        ;(this.comment_in_submission = true),
+        (this.comment_in_submission = true),
           (this.comment_show_alert = true),
           (this.comment_alert_varient = 'bg-red-500'),
-          (this.comment_alert_message = 'Please check the comment entered')
+          (this.comment_alert_message = 'Please check the comment entered');
       }
-      resetForm()
+      resetForm();
     },
     async getComments() {
-      const snapshot = await commentsCollection.where('sid', '==', this.$route.params.id).get()
-      this.comments = []
+      const snapshot = await commentsCollection.where('sid', '==', this.$route.params.id).get();
+      this.comments = [];
       snapshot.forEach((document) => {
         this.comments.push({
           docID: document.id,
           ...document.data()
-        })
-      })
-      console.log('comments', this.comments)
+        });
+      });
+      console.log('comments', this.comments);
     }
   },
   watch: {
     sort(newValue) {
-      console.log(newValue)
-      console.log('this.$route.query.sort ', this.$route.query.sort)
+      console.log(newValue);
+      console.log('this.$route.query.sort ', this.$route.query.sort);
       if (newValue === this.$route.query.sort) {
-        return
+        return;
       }
       this.$router.push({
         query: {
           sort: newValue
         }
-      })
+      });
     }
   }
-}
+};
 </script>

@@ -41,53 +41,53 @@
 </template>
 
 <script>
-import { storage, auth, songsCollection } from '../includes/firebase'
+import { storage, auth, songsCollection } from '../includes/firebase';
 export default {
   name: 'AppUpload',
   data() {
     return {
       is_dragover: false,
       uploads: []
-    }
+    };
   },
   setup() {
-    return {}
+    return {};
   },
   methods: {
     checkDragEvent(drapEvent) {
-      console.log(drapEvent)
+      console.log(drapEvent);
     },
     upload($event) {
-      this.is_dragover = false
-      console.log($event)
-      var files = $event.dataTransfer ? [...$event.dataTransfer.files] : [...$event.target.files]
+      this.is_dragover = false;
+      console.log($event);
+      var files = $event.dataTransfer ? [...$event.dataTransfer.files] : [...$event.target.files];
       files.forEach((file) => {
-        console.log('files', file)
+        console.log('files', file);
         if (file.type != 'audio/mpeg') {
-          return
+          return;
         }
-        const storageRef = storage.ref()
-        const songsRef = storageRef.child(`songs/${file.name}`)
-        const task = songsRef.put(file)
+        const storageRef = storage.ref();
+        const songsRef = storageRef.child(`songs/${file.name}`);
+        const task = songsRef.put(file);
         const uploadIndex =
           this.uploads.push({
             task,
             current_progress: 0,
             name: file.name
-          }) - 1
+          }) - 1;
 
         task.on(
           'state_changed',
           (stateChanged) => {
-            const progress = (stateChanged.bytesTransferred / stateChanged.totalBytes) * 100
-            this.uploads[uploadIndex].current_progress = progress
-            console.log(progress)
+            const progress = (stateChanged.bytesTransferred / stateChanged.totalBytes) * 100;
+            this.uploads[uploadIndex].current_progress = progress;
+            console.log(progress);
           },
           (error) => {
-            console.log(error)
+            console.log(error);
           },
           async () => {
-            console.log('auth.currentUser.displayName', auth.currentUser.displayName)
+            console.log('auth.currentUser.displayName', auth.currentUser.displayName);
             const song = {
               uid: auth.currentUser.uid,
               display_name: auth.currentUser.displayName,
@@ -95,18 +95,18 @@ export default {
               modified_name: task.snapshot.ref.name,
               genre: '',
               comment_count: 0
-            }
-            song.url = await task.snapshot.ref.getDownloadURL()
-            await songsCollection.add(song)
+            };
+            song.url = await task.snapshot.ref.getDownloadURL();
+            await songsCollection.add(song);
           }
-        )
-      })
+        );
+      });
     }
   },
   beforeUnmount() {
     this.uploads.forEach((upload) => {
-      upload.task.cancel()
-    })
+      upload.task.cancel();
+    });
   }
   // mounted() {
   //   console.log('songs from manage component', this.songs)
@@ -114,7 +114,7 @@ export default {
   //     console.log('data.target', song)
   //   })
   // }
-}
+};
 </script>
 
 <style lang="scss" scoped></style>
