@@ -3,11 +3,13 @@
   <section class="w-full mb-8 py-14 text-center text-white relative">
     <div
       class="absolute inset-0 w-full h-full box-border bg-contain music-bg"
-      style="background-image: url(/assets/img/song-header.png)"
+      :style="{ 'background-image': 'url(' + background_url + ')' }"
+      v-show="isShowImage"
     ></div>
     <div class="container mx-auto flex items-center">
       <!-- Play/Pause Button -->
       <button
+        @click.prevent="newSong(song)"
         type="button"
         class="z-50 h-24 w-24 text-3xl bg-white text-black rounded-full focus:outline-none"
       >
@@ -15,7 +17,9 @@
       </button>
       <div class="z-50 text-left ml-8">
         <!-- Song Info -->
-        <div class="text-3xl font-bold">{{ song.modified_name }}</div>
+        <div class="text-3xl font-bold" :class="isShowImage ? 'text-white' : 'text-black'">
+          {{ song.modified_name }}
+        </div>
         <div>{{ song.genre }}</div>
       </div>
     </div>
@@ -85,8 +89,9 @@
 
 <script>
 import { songsCollection, commentsCollection, auth } from '../includes/firebase';
-import { mapState } from 'pinia';
+import { mapState, mapActions } from 'pinia';
 import userStore from '../stores/user';
+import userplayerStore from '../stores/player';
 export default {
   name: 'SongView',
   data() {
@@ -100,11 +105,13 @@ export default {
       comment_alert_varient: 'bg-blue-500',
       comment_alert_message: 'Please wait! Your comment is submitted',
       comments: [],
-      sort: '1'
+      sort: '1',
+      background_url: '/assets/img/song-header.png'
     };
   },
   computed: {
     ...mapState(userStore, ['userLoggedIn']),
+    ...mapState(userplayerStore, ['isShowImage']),
     sortedComments() {
       return this.comments.slice().sort((a, b) => {
         if (this.sort === '1') {
@@ -127,9 +134,11 @@ export default {
     this.sort = sort === '1' || sort === '2' ? sort : '1';
     this.song = docSnapshot.data();
     this.getComments();
+
     //this.sortedComments()
   },
   methods: {
+    ...mapActions(userplayerStore, ['newSong']),
     async SaveComment(formValues, { resetForm }) {
       (this.comment_in_submission = true),
         (this.comment_show_alert = true),
@@ -149,6 +158,7 @@ export default {
           (this.comment_show_alert = true),
           (this.comment_alert_varient = 'bg-green-500'),
           (this.comment_alert_message = 'Success... Your comment is saved');
+
         this.getComments();
       } catch (error) {
         (this.comment_in_submission = true),
@@ -166,6 +176,9 @@ export default {
           docID: document.id,
           ...document.data()
         });
+      });
+      await songsCollection.doc(this.$route.params.id).update({
+        comment_count: this.comments.length
       });
       console.log('comments', this.comments);
     }

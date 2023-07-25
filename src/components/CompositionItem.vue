@@ -86,7 +86,8 @@ export default {
 
     async edit(formValues) {
       try {
-        this.updateSong(this.song.uid, formValues);
+        const result = await this.updateSong(this.song.docID, formValues);
+        console.log('result', result);
       } catch (error) {
         console.log(error);
       }

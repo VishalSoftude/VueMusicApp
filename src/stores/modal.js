@@ -11,9 +11,12 @@ export default defineStore('modal', {
   },
   actions: {
     async updateSong(docId, formValues) {
-      console.log('docId, formValues', docId, formValues);
-      const result = await songsCollection.doc(docId).update(formValues);
-      console.log(result);
+      try {
+        await songsCollection.doc(docId).update(formValues);
+        return true;
+      } catch (error) {
+        return false;
+      }
     },
     async deleteSong(docId) {
       console.log('docId', docId);
