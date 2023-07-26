@@ -91,7 +91,7 @@
 import { songsCollection, commentsCollection, auth } from '../includes/firebase';
 import { mapState, mapActions } from 'pinia';
 import userStore from '../stores/user';
-import userplayerStore from '../stores/player';
+import useplayerStore from '../stores/player';
 export default {
   name: 'SongView',
   data() {
@@ -111,7 +111,7 @@ export default {
   },
   computed: {
     ...mapState(userStore, ['userLoggedIn']),
-    ...mapState(userplayerStore, ['isShowImage']),
+    ...mapState(useplayerStore, ['isShowImage']),
     sortedComments() {
       return this.comments.slice().sort((a, b) => {
         if (this.sort === '1') {
@@ -138,7 +138,7 @@ export default {
     //this.sortedComments()
   },
   methods: {
-    ...mapActions(userplayerStore, ['newSong']),
+    ...mapActions(useplayerStore, ['newSong']),
     async SaveComment(formValues, { resetForm }) {
       (this.comment_in_submission = true),
         (this.comment_show_alert = true),
