@@ -40,44 +40,44 @@
 </template>
 
 <script>
-import { songsCollection } from '../includes/firebase'
-import SongItem from '../components/SongItem.vue'
+import { songsCollection } from '../includes/firebase';
+import SongItem from '../components/SongItem.vue';
 export default {
   name: 'AppHome',
   data() {
     return {
       songs: []
-    }
+    };
   },
   components: {
     SongItem
   },
   async created() {
-    this.getSongs()
-    window.addEventListener('scroll', this.handleScroll)
+    this.getSongs();
+    window.addEventListener('scroll', this.handleScroll);
   },
   beforeUnMount() {
-    window.removeEventListener('scroll', this.handleScroll)
+    window.removeEventListener('scroll', this.handleScroll);
   },
   methods: {
     handleScroll() {
-      const { scrollTop, offsetHeight } = document.documentElement
-      const { innerHeight } = window
-      const bottomOfWindow = Math.round(scrollTop) + innerHeight === offsetHeight
-      console.log(bottomOfWindow)
+      const { scrollTop, offsetHeight } = document.documentElement;
+      const { innerHeight } = window;
+      const bottomOfWindow = Math.round(scrollTop) + innerHeight === offsetHeight;
+      console.log(bottomOfWindow);
       if (bottomOfWindow) {
-        console.log('bottomOfWindow')
+        console.log('bottomOfWindow');
       }
     },
     async getSongs() {
-      const snapshots = await songsCollection.get()
+      const snapshots = await songsCollection.get();
       snapshots.forEach((document) => {
         this.songs.push({
           docID: document.id,
           ...document.data()
-        })
-      })
+        });
+      });
     }
   }
-}
+};
 </script>

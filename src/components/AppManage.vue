@@ -27,37 +27,37 @@
   </section>
 </template>
 <script>
-import AppUpload from '../components/Upload.vue'
-import CompositionItem from '../components/CompositionItem.vue'
-import { songsCollection, auth } from '../includes/firebase'
+import AppUpload from '../components/Upload.vue';
+import CompositionItem from '../components/CompositionItem.vue';
+import { songsCollection, auth } from '../includes/firebase';
 export default {
   name: 'AppManage',
   components: { AppUpload, CompositionItem },
   data() {
     return {
       songs: []
-    }
+    };
   },
   async created() {
-    const snapshot = await songsCollection.where('uid', '==', auth.currentUser.uid).get()
-    console.log('snapshot', snapshot)
+    const snapshot = await songsCollection.where('uid', '==', auth.currentUser.uid).get();
+    console.log('snapshot', snapshot);
 
     snapshot.forEach((document) => {
       const song = {
         ...document.data(),
         docID: document.id
-      }
-      this.songs.push(song)
-    })
+      };
+      this.songs.push(song);
+    });
   },
   methods: {
     updateSongsList(i, values) {
-      this.songs[i].modified_name = values.modified_name
-      this.songs[i].genre = values.genre
+      this.songs[i].modified_name = values.modified_name;
+      this.songs[i].genre = values.genre;
     },
     removeSong(i) {
-      this.songs.splice(i, 1)
+      this.songs.splice(i, 1);
     }
   }
-}
+};
 </script>

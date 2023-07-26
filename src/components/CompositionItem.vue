@@ -52,9 +52,9 @@
 </template>
 
 <script>
-import { mapActions } from 'pinia'
-import modalStore from '../stores/modal'
-import { songsCollection, storage } from '../includes/firebase'
+import { mapActions } from 'pinia';
+import modalStore from '../stores/modal';
+import { songsCollection, storage } from '../includes/firebase';
 export default {
   name: 'CompositionItem',
   props: {
@@ -79,28 +79,29 @@ export default {
         genre: 'required|min:3|max:100'
       },
       showForm: false
-    }
+    };
   },
   methods: {
     ...mapActions(modalStore, ['updateSong', 'deleteSong']),
 
     async edit(formValues) {
       try {
-        this.updateSong(this.song.uid, formValues)
+        const result = await this.updateSong(this.song.docID, formValues);
+        console.log('result', result);
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-      this.updateSongsList(this.index, formValues)
+      this.updateSongsList(this.index, formValues);
     },
     async deleteAsync() {
-      const storageRef = storage.ref()
-      const songRef = storageRef.child(`songs/${this.song.original_name}`)
-      await songRef.delete()
+      const storageRef = storage.ref();
+      const songRef = storageRef.child(`songs/${this.song.original_name}`);
+      await songRef.delete();
 
-      await songsCollection.doc(this.song.docID).delete()
+      await songsCollection.doc(this.song.docID).delete();
 
-      this.removeSong(this.index)
+      this.removeSong(this.index);
     }
   }
-}
+};
 </script>

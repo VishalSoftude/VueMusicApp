@@ -41,8 +41,8 @@
 </template>
 
 <script>
-import { mapActions } from 'pinia'
-import useUserStore from '../stores/user'
+import { mapActions } from 'pinia';
+import useUserStore from '../stores/user';
 export default {
   name: 'LoginForm',
   data() {
@@ -55,30 +55,30 @@ export default {
       login_show_alert: false,
       login_alert_variant: 'bg-blue-500',
       login_alert_msg: 'Please wait! we are loggin you in.'
-    }
+    };
   },
   methods: {
     ...mapActions(useUserStore, ['authenticate']),
     async login(loginFormValues) {
-      this.login_in_submission = true
-      this.login_show_alert = true
-      this.login_alert_variant = 'bg-blue-500'
-      this.login_alert_msg = 'Please wait! we are loggin you in.'
+      this.login_in_submission = true;
+      this.login_show_alert = true;
+      this.login_alert_variant = 'bg-blue-500';
+      this.login_alert_msg = 'Please wait! we are loggin you in.';
 
       try {
-        await this.authenticate(loginFormValues)
+        await this.authenticate(loginFormValues);
       } catch (error) {
-        this.login_in_submission = false
-        this.login_alert_variant = 'bg-red-500'
-        this.login_alert_msg = 'Invalid Login Details..'
-        return
+        this.login_in_submission = false;
+        this.login_alert_variant = 'bg-red-500';
+        this.login_alert_msg = 'Invalid Login Details..';
+        return;
       }
 
-      this.login_alert_variant = 'bg-green-500'
-      this.login_alert_msg = 'Success! You are logged in'
-      window.location.reload()
-      console.log(loginFormValues)
+      this.login_alert_variant = 'bg-green-500';
+      this.login_alert_msg = 'Success! You are logged in';
+      window.location.reload();
+      console.log(loginFormValues);
     }
   }
-}
+};
 </script>

@@ -62,10 +62,10 @@
 </template>
 
 <script>
-import { mapState, mapWritableState } from 'pinia' //the mapState function can map getter functions.
-import useModalStore from '../stores/modal'
-import AppRegisterForm from '@/components/RegisterForm.vue'
-import AppLoginForm from '@/components/LoginForm.vue'
+import { mapState, mapWritableState } from 'pinia'; //the mapState function can map getter functions.
+import useModalStore from '../stores/modal';
+import AppRegisterForm from '@/components/RegisterForm.vue';
+import AppLoginForm from '@/components/LoginForm.vue';
 export default {
   name: 'AppAuth',
   components: {
@@ -75,7 +75,7 @@ export default {
   data() {
     return {
       tab: 'login'
-    }
+    };
   },
   computed: {
     ...mapState(useModalStore, ['hiddenClass']),
@@ -84,5 +84,5 @@ export default {
     })
   },
   methods: {}
-}
+};
 </script>
