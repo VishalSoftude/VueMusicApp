@@ -501,7 +501,7 @@ export default {
 };
 </script>
 
-<style>
+<!-- <style>
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.5s;
@@ -771,4 +771,4 @@ export default {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   cursor: pointer;
 }
-</style>
+</style> -->

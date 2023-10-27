@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { Howl } from 'howler';
 import helper from '@/includes/helper';
+
 export default defineStore('player', {
   state: () => ({
     current_song: {},

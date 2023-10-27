@@ -42,6 +42,19 @@
               >
             </li>
             <li>
+              <RouterLink class="px-2 text-white" :to="{ name: 'product' }"
+                >Product View</RouterLink
+              >
+            </li>
+            <li>
+              <RouterLink class="px-2 text-white" :to="{ name: 'lazyLoad' }"
+                >Lazy Loading</RouterLink
+              >
+            </li>
+            <!-- <li>
+              <RouterLink class="px-2 text-white" :to="{ name: 'upload' }">Upload Files</RouterLink>
+            </li> -->
+            <li>
               <a class="px-2 text-white" href="#" @click="signOut()">LogOut</a>
             </li>
           </template>
@@ -69,9 +82,11 @@ export default {
     },
     signOut() {
       this.userStore.signOut();
-      if (this.$route.meta.reqiresAuth) {
-        this.$router.push({ name: 'home' });
-      }
+      console.log(this.$route.path);
+
+      //if (this.$route.meta.reqiresAuth) {
+      //this.$router.push({ name: 'home' });
+      //}
     }
   }
 };

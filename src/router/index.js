@@ -1,42 +1,56 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import Home from '../views/HomeView.vue';
-import About from '../views/AboutView.vue';
-import Manage from '../components/AppManage.vue';
-import Creative from '../components/CreativeThings.vue';
-import TestingComponent from '../components/Testing.vue';
-import ApiIntegration from '../components/ApiIntegration.vue';
-import SongView from '../views/SongView.vue';
+//import Home from '../views/HomeView.vue';
+//import About from '../views/AboutView.vue';
+//import Manage from '../components/AppManage.vue';
+//import Creative from '../components/CreativeThings.vue';
+//import TestingComponent from '../components/Testing.vue';
+//import ApiIntegration from '../components/ApiIntegration.vue';
+//import ProductView from '../components/ProductView.vue';
+//import MultiFileUploads from '../components/MultifileUploader.vue';
+
+//import SongView from '../views/SongView.vue';
+
 import UseUserStore from '../stores/user';
 
 const routes = [
   {
     name: 'home',
     path: '/',
-    component: Home
+    component: () => import('../views/HomeView.vue')
   },
   {
     name: 'about',
     path: '/about',
-    component: About
+    component: () => import('../views/AboutView.vue')
   },
   {
     name: 'manage',
     path: '/manage-music',
-    component: Manage,
-    beforeEnter: (to, from, next) => {
-      console.log('Manage Route Guard');
-      next();
-    },
+    component: () => import('../components/AppManage.vue'),
     meta: {
-      reqiresAuth: true
+      requiresAuth: true
     }
   },
   {
     name: 'creative',
     path: '/creative',
-    component: Creative,
+    component: () => import('../components/CreativeThings.vue')
+  },
+  {
+    name: 'product',
+    path: '/product',
+    component: () => import('../components/ProductView.vue'),
     beforeEnter: (to, from, next) => {
-      console.log('Manage Creative Route Guard');
+      console.log('Manage Product Route Guard');
+      next();
+    }
+  },
+  {
+    name: 'upload',
+    path: '/upload',
+    component: () => import('../components/MultifileUploader.vue'),
+    beforeEnter: (to, from, next) => {
+      console.log('MultiFileUploads');
       next();
     }
   },
@@ -44,12 +58,12 @@ const routes = [
     name: 'song',
     path: '/song/:id',
     //redirect: { name: 'song' },
-    component: SongView
+    component: () => import('../views/SongView.vue')
   },
   {
     name: 'testing',
     path: '/testing',
-    component: TestingComponent,
+    component: () => import('../components/Testing.vue'),
     beforeEnter: (to, from, next) => {
       console.log('Manage Creative Route Guard');
       next();
@@ -58,9 +72,18 @@ const routes = [
   {
     name: 'apiIntegration',
     path: '/apiIntegration',
-    component: ApiIntegration,
+    component: () => import('../components/ApiIntegration.vue'),
     beforeEnter: (to, from, next) => {
       console.log('Manage Creative Route Guard');
+      next();
+    }
+  },
+  {
+    name: 'lazyLoad',
+    path: '/lazy-load',
+    component: () => import('../components/LazyLoading.vue'),
+    beforeEnter: (to, from, next) => {
+      console.log('Manage Lazy load Component');
       next();
     }
   },
@@ -80,16 +103,18 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (!to.meta.reqiresAuth) {
+  if (to.meta.requiresAuth == undefined) {
     next();
     return;
-  }
-  const userStore = UseUserStore();
-  if (userStore.userLoggedIn) {
-    next();
   } else {
-    next({ name: 'home' });
+    const userStore = UseUserStore();
+    if (userStore.userLoggedIn) {
+      next();
+    } else {
+      next({ name: 'home' });
+    }
   }
+
   // console.log('Global Guard')
   // console.log(to, from)
   // next()

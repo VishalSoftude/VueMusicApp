@@ -33,6 +33,15 @@ export default defineStore('user', {
     },
     setAuthToken(token) {
       this.authToken = token;
+    },
+    async sendPasswordResetEmail(email) {
+      try {
+        await auth.sendPasswordResetEmail(email);
+        return { success: true, message: 'Password reset email sent.' };
+      } catch (error) {
+        console.error('Error sending password reset email:', error);
+        throw new Error('Password reset email could not be sent.');
+      }
     }
   }
 });
