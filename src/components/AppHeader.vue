@@ -7,7 +7,7 @@
         class="text-white font-bold uppercase text-2xl mr-4"
         :to="{ name: 'home' }"
         exact-active-class="no-active"
-        >Music</RouterLink
+        >{{ $t('appHeader.music') }}</RouterLink
       >
 
       <div class="flex flex-grow items-center">
@@ -22,6 +22,7 @@
               >Login / Register</a
             >
           </li>
+
           <template v-else>
             <li>
               <RouterLink class="px-2 text-white" :to="{ name: 'manage' }">Manage</RouterLink>
@@ -59,6 +60,13 @@
             </li>
           </template>
         </ul>
+        <div class="flex flex-grow items-center" style="justify-content: end">
+          <select name="translation" class="language" @change="changeLanguage($event)">
+            <option value="en">English</option>
+            <option value="he">Hebrew</option>
+            <option value="hi">Hindi</option>
+          </select>
+        </div>
       </div>
     </nav>
   </header>
@@ -87,7 +95,25 @@ export default {
       //if (this.$route.meta.reqiresAuth) {
       //this.$router.push({ name: 'home' });
       //}
+    },
+    changeLanguage(event) {
+      if (event.target.value != '') {
+        this.$i18n.locale = event.target.value;
+      }
     }
   }
 };
 </script>
+
+<style>
+.language {
+  width: 80px;
+  text-align: center;
+  padding: 0px;
+  padding-bottom: 0px;
+  padding-bottom: 3px;
+  margin-top: 8px;
+  background-color: rgb(55 65 81 / var(--tw-bg-opacity));
+  color: white;
+}
+</style>

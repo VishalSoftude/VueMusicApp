@@ -7,7 +7,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 //import ApiIntegration from '../components/ApiIntegration.vue';
 //import ProductView from '../components/ProductView.vue';
 //import MultiFileUploads from '../components/MultifileUploader.vue';
-
+import AppLoading from '../components/AppLoading.vue';
 //import SongView from '../views/SongView.vue';
 
 import UseUserStore from '../stores/user';
@@ -29,7 +29,9 @@ const routes = [
     component: () => import('../components/AppManage.vue'),
     meta: {
       requiresAuth: true
-    }
+    },
+    loading: AppLoading,
+    delay: 1000
   },
   {
     name: 'creative',

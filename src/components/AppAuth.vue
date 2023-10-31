@@ -83,6 +83,8 @@ export default {
       modalVisibility: 'isOpen'
     })
   },
-  methods: {}
+  methods: {
+    data() {}
+  }
 };
 </script>

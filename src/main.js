@@ -11,6 +11,11 @@ import messageService from './includes/messageService';
 import apiService from './includes/apiService';
 import VueLazyload from 'vue-lazyload';
 import icon from './directives/icon';
+import i18n from './includes/i18n';
+import hebrewJsonData from './language/he.json';
+import hindiJsonData from './language/hi.json';
+
+import { translateService } from './includes/translate';
 
 import './assets/base.css';
 import './assets/main.css';
@@ -30,11 +35,29 @@ auth.onAuthStateChanged(() => {
       loading: 'dist/loading.gif',
       attempt: 1
     });
+
+    app.use(i18n);
     app.provide('messageService', messageService);
     app.provide('apiService', apiService);
     app.config.globalProperties.$http = axios;
 
     app.directive('icon', icon);
+    translateService
+      .translateData(hebrewJsonData, 'he')
+      .then((translatedData) => {
+        console.log(translatedData);
+      })
+      .catch((error) => {
+        console.error('Translation error:', error);
+      });
+    translateService
+      .translateData(hindiJsonData, 'hi')
+      .then((translatedData) => {
+        console.log(translatedData);
+      })
+      .catch((error) => {
+        console.error('Translation error:', error);
+      });
     app.mount('#app');
   }
 });
